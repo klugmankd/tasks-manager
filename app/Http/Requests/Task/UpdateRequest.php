@@ -72,7 +72,7 @@ use OpenApi\Annotations as OA;
  *     )
  * )
  */
-class UpdateRequest extends FormRequest
+class UpdateRequest extends TaskRequest
 {
     /**
      * Determine if the user is authorized to make this request.

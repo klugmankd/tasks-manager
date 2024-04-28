@@ -2,44 +2,38 @@
 
 namespace App\Services;
 
-use App\Enums\RoleEnum;
+use App\DataTransferObjects\TaskDTO;
 use App\Http\Resources\Collections\TaskCollection;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Models\User;
+use App\Repositories\TaskRepository;
 
 class TaskService
 {
 
-    public const array RELATIONS = ['assignee', 'author'];
+    public function __construct(private TaskRepository $repository)
+    {}
 
     public function readAll(User $user): TaskCollection
     {
-        $tasks = Task::with(self::RELATIONS)
-            ->when($user->role->name === RoleEnum::ASSIGNEE->value, function ($query) use ($user) {
-                return $query->where('assignee_id', $user->id);
-            })
-            ->get();
-        return new TaskCollection($tasks);
+        return new TaskCollection($this->repository->readAll($user));
     }
 
-    public function create(User $user, array $requestData): TaskResource
+    public function create(User $user, TaskDTO $taskDTO): TaskResource
     {
-        $task = Task::create([
-            'author_id' => $user->id,
-            ...$requestData,
-        ]);
-        return new TaskResource($task->load(self::RELATIONS));
+        $task = $this->repository->create($user, $taskDTO);
+        return new TaskResource($task);
     }
 
-    public function update(Task $task, array $requestData): TaskResource
+    public function update(Task $task, TaskDTO $taskDTO): TaskResource
     {
-        $task->update($requestData);
-        return new TaskResource($task->load(self::RELATIONS)->refresh());
+        $task = $this->repository->update($task, $taskDTO);
+        return new TaskResource($task);
     }
 
     public function delete(Task $task): void
     {
-        $task->delete();
+        $this->repository->delete($task);
     }
 }

@@ -10,6 +10,7 @@ use App\Http\Requests\Task\UpdateRequest;
 use App\Http\Resources\Collections\TaskCollection;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use App\Repositories\TaskRepository;
 use App\Services\TaskService;
 use Illuminate\Http\JsonResponse;
 use OpenApi\Annotations as OA;
@@ -34,17 +35,17 @@ class TaskController extends Controller
 
     public function show(GetRequest $request, Task $task): TaskResource
     {
-        return new TaskResource($task->load(TaskService::RELATIONS));
+        return new TaskResource($task->load(TaskRepository::RELATIONS));
     }
 
     public function store(StoreRequest $request): TaskResource
     {
-        return $this->service->create($request->user(), $request->all());
+        return $this->service->create($request->user(), $request->toDTO());
     }
 
     public function update(UpdateRequest $request, Task $task): TaskResource
     {
-        return $this->service->update($task, $request->all());
+        return $this->service->update($task, $request->toDTO());
     }
 
     public function destroy(DeleteRequest $request, Task $task): JsonResponse

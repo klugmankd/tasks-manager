@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Task;
 
+use App\DataTransferObjects\TaskDTO;
 use App\Enums\StatusEnum;
 use App\Models\Task;
 use Illuminate\Foundation\Http\FormRequest;
@@ -63,7 +64,7 @@ use OpenApi\Annotations as OA;
  *     )
  * )
  */
-class StoreRequest extends FormRequest
+class StoreRequest extends TaskRequest
 {
     /**
      * Determine if the user is authorized to make this request.
