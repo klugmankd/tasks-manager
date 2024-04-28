@@ -174,7 +174,9 @@ class TaskTest extends TestCase
         $task = $tasks[$randomTaskIndex];
 
         $this->actingAs($user);
-        $result = $this->get('api/tasks/' . $task->id);
+        $result = $this->get('api/tasks/' . $task->id)
+            ->assertOk()
+            ->assertJsonStructure(['data' => self::ITEM_STRUCTURE]);
 
         $response = $result->json();
         $this->assertShow($task, $response);
