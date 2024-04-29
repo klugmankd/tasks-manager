@@ -2,8 +2,6 @@
 
 namespace App\DataTransferObjects;
 
-use Carbon\Carbon;
-
 /**
  * @property int    $assignee_id
  * @property string $name

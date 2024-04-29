@@ -58,7 +58,7 @@ use OpenApi\Annotations as OA;
  *         )
  *     ),
  *     @OA\Response(
- *         response=201,
+ *         response=200,
  *         description="Task created successfully",
  *         @OA\JsonContent(ref="#/components/schemas/TaskResource")
  *     ),
